@@ -25,20 +25,22 @@ public class NaiveBayesClassifier {
 
     /**
      * Find the probability that an object has a certain classification.
-     * @param c
-     * @return
+     * @param c The class whose probability we're checking.
+     * @return The probability that a
      */
     private double classProbability(Serializable c){
         int classcount = (trainingset.containsKey(c)) ? 0 : 1;  // Add one for smoothing if doesn't exist
         int totalcount = 0;
-        if(classcount == 0){
         for(Serializable s : trainingset.keySet()){
             totalcount += trainingset.get(s).size();
-        }
         }
         return (double) classcount / (double) totalcount;
     }
 
+
+    /**
+     * A defualt constructor.
+     */
     public NaiveBayesClassifier(){
         trainingset = new HashMap<Serializable, ArrayList<Attributes>>();
     }
