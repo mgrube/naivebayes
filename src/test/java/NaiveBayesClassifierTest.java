@@ -131,8 +131,8 @@ public void conditionalProbabilityTest(){
         instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
 
         // Asking for a prediction based off of State, we'll look at the correct value supposing that a person lives in new york.
-        // There are 3 classes, so P(C) =  1/3. P(New York|Democrat) is  9/17 or .529  (1/3)*(9/17) ~= .1764
-        // The P(New York|Republican) and P(New York|Libertarian) are  1/5 and 1/6, respectively, giving us  .066 and .055 respectively.
+        // There are 3 classes, so P(Democrat) =  19/30. P(New York|Democrat) is  9/19 or .529  (19/30)*(9/19) ~= .29999
+        // The P(New York|Republican) and P(New York|Libertarian) are  1/6 and 1/5, respectively, giving us  .03333 and .03333.
         // Therefore, a person in New York should be classified as a democrat.
 
         NaiveBayesClassifier NBC = new NaiveBayesClassifier();
