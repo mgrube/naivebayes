@@ -1,10 +1,10 @@
 
 /**
  * Created with IntelliJ IDEA.
- * User: FS105844
- * Date: 6/28/12
- * Time: 8:46 AM
- * To change this template use File | Settings | File Templates.
+ * User: snark
+ * Created Date: 6/28/12
+ * Created Time: 8:46 AM
+ * @author Michael
  */
 import quickdt.Attributes;
 import quickdt.Instance;
@@ -43,8 +43,10 @@ public class NaiveBayesClassifier {
     /**
      * Compute P(F|C).
      * The attribute count is 1 by default to avoid making the probability 0.
-     * @param c
-     * @return
+     * @param s The string associated with the attribute
+     * @param o The object associated with the attribute
+     * @param c An object representing a classification.
+     * @return The conditional probability P(Fi|C).
      */
     private double conditionalProbability(String s, Serializable o, Serializable c){
         int totalcount = trainingset.get(c).size();
@@ -67,7 +69,7 @@ public class NaiveBayesClassifier {
     /**
      * Find class corresponding to the max P(C)*P(Fi|C)
      * @param a A set of attributes.
-     * @return
+     * @return The most likely
      */
     public Serializable predictClass(Attributes a){
         double classprob = 1/ (double) trainingset.size();
