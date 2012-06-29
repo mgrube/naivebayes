@@ -86,9 +86,9 @@ public void conditionalProbabilityTest(){
 
 
         Assert.assertTrue(NBC.getTrainingset().containsKey("female") && NBC.getTrainingset().containsKey("male"));
-        Assert.assertTrue(NBC.getTrainingset().get("female").contains(Attributes.create("state", "ohio", "profession", "teacher").classification("female")));
-        Assert.assertTrue(NBC.getTrainingset().get("female").contains(Attributes.create("state", "ohio", "profession", "accountant").classification("female")));
-        Assert.assertTrue(NBC.getTrainingset().get("male").contains(Attributes.create("state", "ohio", "profession", "electrician").classification("male")));
+        Assert.assertTrue(NBC.getTrainingset().get("female").contains(Attributes.create("state", "ohio", "profession", "teacher")));
+        Assert.assertTrue(NBC.getTrainingset().get("female").contains(Attributes.create("state", "ohio", "profession", "accountant")));
+        Assert.assertTrue(NBC.getTrainingset().get("male").contains(Attributes.create("state", "ohio", "profession", "electrician")));
 
     }
 
@@ -97,6 +97,49 @@ public void conditionalProbabilityTest(){
      */
     @Test
     public void classificationTest(){
+
+        ArrayList<Instance> instances = new ArrayList<Instance>();
+
+        // Using the same data we did for conditional probability
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("libertarian"));
+        instances.add(Attributes.create("state", "texas", "gender", "male", "race", "white").classification("libertarian"));
+        instances.add(Attributes.create("state", "kansas", "gender", "male", "race", "white").classification("libertarian"));
+        instances.add(Attributes.create("state", "texas", "gender", "male", "race", "white").classification("libertarian"));
+        instances.add(Attributes.create("state", "texas", "gender", "male", "race", "white").classification("libertarian"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "asian").classification("republican"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
+        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "hispanic").classification("republican"));
+        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("republican"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("republican"));
+        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("republican"));
+        instances.add(Attributes.create("state", "texas", "gender", "female", "race", "black").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "black").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "asian").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "indian").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "black").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
+        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
+
+        // Asking for a prediction based off of State, we'll look at the correct value supposing that a person lives in new york.
+        // There are 3 classes, so P(C) =  1/3. P(New York|Democrat) is  9/17 or .529  (1/3)*(9/17) ~= .1764
+        // The P(New York|Republican) and P(New York|Libertarian) are  1/5 and 1/6, respectively, giving us  .066 and .055 respectively.
+        // Therefore, a person in New York should be classified as a democrat.
+
+        NaiveBayesClassifier NBC = new NaiveBayesClassifier();
+        NBC.addInstances(instances);
+        Assert.assertEquals(NBC.predictClass(Attributes.create("state", "new york")), "democrat");
 
     }
 
