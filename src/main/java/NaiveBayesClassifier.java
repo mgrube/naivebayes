@@ -23,6 +23,22 @@ public class NaiveBayesClassifier {
         return trainingset;
     }
 
+    /**
+     * Find the probability that an object has a certain classification.
+     * @param c
+     * @return
+     */
+    private double classProbability(Serializable c){
+        int classcount = (trainingset.containsKey(c)) ? 0 : 1;  // Add one for smoothing if doesn't exist
+        int totalcount = 0;
+        if(classcount == 0){
+        for(Serializable s : trainingset.keySet()){
+            totalcount += trainingset.get(s).size();
+        }
+        }
+        return (double) classcount / (double) totalcount;
+    }
+
     public NaiveBayesClassifier(){
         trainingset = new HashMap<Serializable, ArrayList<Attributes>>();
     }
@@ -79,11 +95,11 @@ public class NaiveBayesClassifier {
      * @return The maximum value of P(C)*P(Fi|C) over all classifications.
      */
     public Serializable predictClass(Attributes a){
-        double classprob = 1/ (double) trainingset.size();
         double finalprob = 0;
         Serializable classification = null;
         for(Serializable c : trainingset.keySet()){
             double conditionalprob = 1.0;
+            double classprob = classProbability(c);
             for(String s : a.keySet()){
                 conditionalprob *= conditionalProbability(s, a.get(s), c);
             }
