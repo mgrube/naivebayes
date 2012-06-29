@@ -17,7 +17,11 @@ import java.util.*;
  */
 public class NaiveBayesClassifier {
 
-    public HashMap<Serializable, ArrayList<Attributes>> trainingset;
+    private HashMap<Serializable, ArrayList<Attributes>> trainingset;
+
+    public HashMap<Serializable, ArrayList<Attributes>> getTrainingset(){
+        return trainingset;
+    }
 
     public NaiveBayesClassifier(){
         trainingset = new HashMap<Serializable, ArrayList<Attributes>>();
@@ -34,21 +38,21 @@ public class NaiveBayesClassifier {
      * @param i An instance.
      */
     private void train(Instance i){
-        if(!trainingset.keySet().contains(i.classification)){
+        if(!trainingset.containsKey(i.classification)){
             trainingset.put(i.classification, new ArrayList<Attributes>());
         }
         trainingset.get(i.classification).add(i.attributes);
     }
 
     /**
-     * Compute P(F|C).
+     * Compute P(Fi|C).
      * The attribute count is 1 by default to avoid making the probability 0.
      * @param s The string associated with the attribute
      * @param o The object associated with the attribute
      * @param c An object representing a classification.
      * @return The conditional probability P(Fi|C).
      */
-    private double conditionalProbability(String s, Serializable o, Serializable c){
+    public double conditionalProbability(String s, Serializable o, Serializable c){
         int totalcount = trainingset.get(c).size();
         System.out.println("Number of attributes in " + c + " classifcation: " + trainingset.get(c).size());
         int attributecount = 0;
@@ -60,7 +64,7 @@ public class NaiveBayesClassifier {
             }
         }
 
-        attributecount = (attributecount == 0) ? 1 : attributecount; //If there are no attributes, add 1 for smoothing.
+        attributecount = (attributecount == 0) ? 1 : attributecount; //If there are no attributes, add 1 to prevent 0 probability.
 
         conditionalprob = (double) attributecount / (double) totalcount;
         return conditionalprob;
@@ -69,7 +73,7 @@ public class NaiveBayesClassifier {
     /**
      * Find class corresponding to the max P(C)*P(Fi|C)
      * @param a A set of attributes.
-     * @return The most likely
+     * @return The maximum value of P(C)*P(Fi|C) over all classifications.
      */
     public Serializable predictClass(Attributes a){
         double classprob = 1/ (double) trainingset.size();
@@ -87,46 +91,6 @@ public class NaiveBayesClassifier {
         }
         return classification;
 
-    }
-
-    public static void main(String args[]){
-        ArrayList<Instance> instances = new ArrayList<Instance>();
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("libertarian"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "white").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("democrat"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("democrat"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("democrat"));
-        instances.add(Attributes.create("state", "ohio", "gender", "male", "race", "black").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("republican"));
-        instances.add(Attributes.create("state", "ohio", "gender", "female", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "texas", "gender", "male", "race", "white").classification("libertarian"));
-        instances.add(Attributes.create("state", "kansas", "gender", "male", "race", "white").classification("libertarian"));
-        instances.add(Attributes.create("state", "texas", "gender", "male", "race", "white").classification("libertarian"));
-        instances.add(Attributes.create("state", "texas", "gender", "male", "race", "white").classification("libertarian"));
-        instances.add(Attributes.create("state", "texas", "gender", "female", "race", "black").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "black").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "asian").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "indian").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "black").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "female", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("democrat"));
-        instances.add(Attributes.create("state", "new york", "gender", "male", "race", "white").classification("republican"));
-
-
-        NaiveBayesClassifier NBC = new NaiveBayesClassifier();
-        NBC.addInstances(instances);
-        System.out.println(NBC.conditionalProbability("state", "texas", "libertarian"));
-        System.out.println(NBC.predictClass(Attributes.create("state", "new york", "gender", "female")));
     }
 
 }
