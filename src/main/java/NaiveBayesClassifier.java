@@ -27,6 +27,10 @@ public class NaiveBayesClassifier {
         trainingset = new HashMap<Serializable, ArrayList<Attributes>>();
     }
 
+    /**
+     * Convenience function for adding a list of instances.
+     * @param instances
+     */
     public void addInstances(List<Instance> instances){
         for(Instance i : instances){
             train(i);
@@ -37,7 +41,7 @@ public class NaiveBayesClassifier {
      * Add an instance to our training set.
      * @param i An instance.
      */
-    private void train(Instance i){
+    public void train(Instance i){
         if(!trainingset.containsKey(i.classification)){
             trainingset.put(i.classification, new ArrayList<Attributes>());
         }
@@ -54,7 +58,6 @@ public class NaiveBayesClassifier {
      */
     public double conditionalProbability(String s, Serializable o, Serializable c){
         int totalcount = trainingset.get(c).size();
-        System.out.println("Number of attributes in " + c + " classifcation: " + trainingset.get(c).size());
         int attributecount = 0;
         double conditionalprob = 0.0;
 
