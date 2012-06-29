@@ -67,8 +67,6 @@ public void conditionalProbabilityTest(){
     NaiveBayesClassifier NBC = new NaiveBayesClassifier();
     NBC.addInstances(instances);
     Assert.assertEquals(NBC.conditionalProbability("state", "texas", "libertarian"), 0.6);
-
-    Assert.assertEquals(2,2);
 }
 
     /**
