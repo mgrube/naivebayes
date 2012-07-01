@@ -29,13 +29,10 @@ public class NaiveBayesClassifier {
      * @return The probability that a
      */
     public double classProbability(Serializable c){
-        int classcount = (trainingset.containsKey(c)) ? 0 : 1;  // Add one for smoothing if doesn't exist
+        int classcount = (trainingset.containsKey(c)) ? trainingset.get(c).size() : 1;  // Add one for smoothing if doesn't exist
         int totalcount = 0;
         for(Serializable s : trainingset.keySet()){
             totalcount += trainingset.get(s).size();
-        }
-        if(classcount == 0){
-            classcount = trainingset.get(c).size();
         }
         return (double) classcount / (double) totalcount;
     }
